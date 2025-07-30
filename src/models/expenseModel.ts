@@ -21,3 +21,18 @@ export const getExpensesByUser = async (userId: number) => {
   );
   return rows;
 };
+
+export const getMonthlySummary = async (
+  userId: number,
+  year: number,
+  month: number
+) => {
+  const [rows]: any = await db.execute(
+    `SELECT category, SUM(amount) AS total
+     FROM expenses
+     WHERE user_id = ? AND YEAR(date) = ? AND MONTH(date) = ?
+     GROUP BY category`,
+    [userId, year, month]
+  );
+  return rows;
+};
