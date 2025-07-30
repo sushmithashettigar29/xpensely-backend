@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes";
+import expenseRoutes from "./routes/expenseRoutes";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
