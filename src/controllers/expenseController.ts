@@ -4,6 +4,8 @@ import {
   getExpensesByUser,
   getMonthlySummary,
   getExpenseById,
+  updateExpense,
+  deleteExpense,
 } from "../models/expenseModel";
 
 interface AuthRequest extends Request {
@@ -72,5 +74,49 @@ export const getMonthlyExpenseSummary = async (
     res.json({ summary });
   } catch (error) {
     res.status(500).json({ message: "Error fetching summary", error });
+  }
+};
+
+export const editExpense = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.id;
+  const expenseId = Number(req.params.id);
+  const { title, amount, category, date } = req.body;
+
+  try {
+    const result = await updateExpense(
+      expenseId,
+      userId,
+      title,
+      amount,
+      category,
+      date
+    );
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Expense not found or unauthorized" });
+    }
+
+    res.json({ message: "Expense updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating expense", error });
+  }
+};
+
+export const removeExpense = async (req: AuthRequest, res: Response) => {
+  const userId = req.user.id;
+  const expenseId = Number(req.params.id);
+
+  try {
+    const result = await deleteExpense(expenseId, userId);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Expense not found or unauthorized" });
+    }
+
+    res.json({ message: "Expense deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting expense", error });
   }
 };

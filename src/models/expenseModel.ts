@@ -44,3 +44,29 @@ export const getMonthlySummary = async (
   );
   return rows;
 };
+
+export const updateExpense = async (
+  expenseId: number,
+  userId: number,
+  title: string,
+  amount: number,
+  category: string,
+  date: string
+) => {
+  const [result]: any = await db.execute(
+    `UPDATE expenses
+     SET title = ?, amount = ?, category = ?, date = ?
+     WHERE id = ? AND user_id = ?`,
+    [title, amount, category, date, expenseId, userId]
+  );
+  return result;
+};
+
+export const deleteExpense = async (expenseId: number, userId: number) => {
+  const [result]: any = await db.execute(
+    `DELETE FROM expenses WHERE id = ? AND user_id = ?`,
+    [expenseId, userId]
+  );
+  return result;
+};
+
