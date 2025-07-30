@@ -22,6 +22,14 @@ export const getExpensesByUser = async (userId: number) => {
   return rows;
 };
 
+export const getExpenseById = async (expenseId: number, userId: number) => {
+  const [rows]: any = await db.execute(
+    "SELECt * FROM expenses WHERE id = ? AND user_id = ?",
+    [expenseId, userId]
+  );
+  return rows[0];
+};
+
 export const getMonthlySummary = async (
   userId: number,
   year: number,

@@ -3,6 +3,7 @@ import {
   addExpense,
   getExpensesByUser,
   getMonthlySummary,
+  getExpenseById,
 } from "../models/expenseModel";
 
 interface AuthRequest extends Request {
@@ -31,6 +32,23 @@ export const getUserExpenses = async (req: AuthRequest, res: Response) => {
     res.json({ expenses });
   } catch (error) {
     res.status(500).json({ message: "Error fetching expenses", error });
+  }
+};
+
+export const getSingleExpense = async (req: AuthRequest, res: Response) => {
+  const expenseId = Number(req.params.id);
+  const userId = req.user.id;
+
+  try {
+    const expense = await getExpenseById(expenseId, userId);
+
+    if (!expense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    res.json({ expense });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching expense", error });
   }
 };
 
