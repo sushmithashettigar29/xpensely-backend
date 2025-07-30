@@ -58,9 +58,6 @@ All routes below require an `Authorization: Bearer <token>` header.
 5. Create tables via SQL tab in phpMyAdmin
 6. Run `npm run dev`
 
-```
-
-```
 
 ## 📝 License
 
